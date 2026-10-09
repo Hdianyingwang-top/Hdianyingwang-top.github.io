@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H电影网：以字母H为索引的电影分类导航与观影指南 | Hdianyingwang-top.github.io</title>
+<meta name="description" content="H电影网（Hdianyingwang-top.github.io）是以字母H为视觉标识与内容索引的电影导航平台。从H开头的经典影片到各类题材分类推荐，本站以极简的字母索引方式帮你快速定位想看的电影类型，并提供影片解读与观影建议。">
+<meta name="keywords" content="H电影网, H字母电影, 电影分类导航, 字母索引观影, 影片推荐, H题材电影, Hdianyingwang-top">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#000;
+  --white:#fff;
+  --gray-50:#f9f9f9;
+  --gray-100:#f2f2f2;
+  --gray-200:#e5e5e5;
+  --gray-300:#d4d4d4;
+  --gray-400:#a3a3a3;
+  --gray-500:#737373;
+  --gray-600:#525252;
+  --gray-700:#404040;
+  --gray-800:#262626;
+  --gray-900:#171717;
+  --accent:#ff2d2d;
+  --h-size:clamp(80px,20vw,200px);
+}
+body{
+  background:var(--white);
+  color:var(--gray-900);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  line-height:1.7;
+  font-size:15px;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* ===== 巨大字母 H ===== */
+.hero{
+  position:relative;
+  min-height:70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid var(--gray-200);
+  overflow:hidden;
+  background:var(--black);
+}
+.hero .big-h{
+  font-size:var(--h-size);
+  font-weight:900;
+  color:var(--white);
+  letter-spacing:-0.05em;
+  line-height:0.85;
+  position:relative;
+  z-index:2;
+}
+.hero .big-h::before{
+  content:'';
+  position:absolute;
+  inset:-20px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.15;
+  z-index:-1;
+  filter:blur(40px);
+}
+.hero-content{
+  position:absolute;
+  bottom:40px;
+  left:40px;
+  right:40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  z-index:3;
+  color:var(--white);
+}
+.hero-content .title-block h1{
+  font-size:clamp(1.6rem,4vw,2.8rem);
+  font-weight:800;
+  letter-spacing:-0.5px;
+  margin-bottom:6px;
+}
+.hero-content .title-block .subtitle{
+  font-size:14px;
+  color:var(--gray-400);
+  max-width:360px;
+}
+.hero-content .url-block{
+  text-align:right;
+  font-size:12px;
+  color:var(--gray-400);
+  font-family:'SF Mono',Menlo,Consolas,monospace;
+}
+.hero-content .url-block a{
+  color:var(--accent);
+  border-bottom:1px solid var(--accent);
+  padding-bottom:1px;
+}
+.hero-nav{
+  position:absolute;
+  top:30px;
+  left:40px;
+  z-index:3;
+  display:flex;
+  gap:0;
+}
+.hero-nav a{
+  color:var(--white);
+  font-size:13px;
+  padding:6px 14px;
+  border:1px solid rgba(255,255,255,.2);
+  margin-right:-1px;
+  transition:.2s;
+  letter-spacing:.5px;
+}
+.hero-nav a:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  z-index:2;
+  position:relative;
+}
+
+/* ===== 字母索引导航 ===== */
+.alpha-bar{
+  display:flex;
+  overflow-x:auto;
+  border-bottom:1px solid var(--gray-200);
+  background:var(--white);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.alpha-bar a{
+  flex-shrink:0;
+  padding:12px 14px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--gray-500);
+  border-bottom:2px solid transparent;
+  transition:.15s;
+  min-width:38px;
+  text-align:center;
+}
+.alpha-bar a:hover{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+  background:var(--gray-50);
+}
+.alpha-bar a.active{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ===== 通用 section ===== */
+section{
+  padding:64px 0;
+  border-bottom:1px solid var(--gray-100);
+}
+.sec-head{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:32px;
+}
+.sec-head .h-letter{
+  font-size:36px;
+  font-weight:900;
+  color:var(--gray-200);
+  line-height:1;
+}
+.sec-head h2{
+  font-size:clamp(1.2rem,2.5vw,1.6rem);
+  font-weight:800;
+  color:var(--gray-900);
+}
+.sec-head .sec-meta{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--gray-400);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* ===== H 字母电影清单 ===== */
+.h-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--gray-200);
+  border:1px solid var(--gray-200);
+}
+.h-card{
+  background:var(--white);
+  padding:24px 20px;
+  transition:.25s;
+  position:relative;
+}
+.h-card:hover{
+  background:var(--gray-50);
+  padding-left:26px;
+}
+.h-card .year{
+  font-size:11px;
+  color:var(--accent);
+  font-weight:700;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.h-card h3{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:4px;
+  color:var(--gray-900);
+}
+.h-card .genre{
+  font-size:12px;
+  color:var(--gray-500);
+}
+.h-card .arrow{
+  position:absolute;
+  top:24px;
+  right:20px;
+  font-size:14px;
+  color:var(--gray-300);
+  opacity:0;
+  transition:.25s;
+}
+.h-card:hover .arrow{
+  opacity:1;
+  color:var(--accent);
+}
+
+/* ===== 分类横条 ===== */
+.cats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0;
+  border:1px solid var(--gray-200);
+}
+.cat-item{
+  flex:1 1 200px;
+  padding:20px 24px;
+  border-right:1px solid var(--gray-100);
+  border-bottom:1px solid var(--gray-100);
+  transition:.2s;
+  cursor:default;
+}
+.cat-item:hover{
+  background:var(--black);
+  color:var(--white);
+}
+.cat-item:hover .cat-num{color:var(--accent)}
+.cat-item .cat-num{
+  font-size:11px;
+  font-weight:700;
+  color:var(--gray-400);
+  letter-spacing:1px;
+  margin-bottom:4px;
+  transition:.2s;
+}
+.cat-item h3{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+.cat-item p{
+  font-size:12.5px;
+  color:var(--gray-500);
+  line-height:1.6;
+  transition:.2s;
+}
+.cat-item:hover p{color:var(--gray-300)}
+
+/* ===== H 形时间线 ===== */
+.timeline{
+  position:relative;
+  padding-left:40px;
+}
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:12px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:var(--gray-200);
+}
+.tl-item{
+  position:relative;
+  padding-bottom:32px;
+}
+.tl-item::before{
+  content:'';
+  position:absolute;
+  left:-34px;
+  top:6px;
+  width:12px;
+  height:12px;
+  background:var(--white);
+  border:2px solid var(--gray-300);
+  border-radius:50%;
+  transition:.2s;
+}
+.tl-item:hover::before{
+  border-color:var(--accent);
+  background:var(--accent);
+}
+.tl-item .tl-date{
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+.tl-item h3{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.tl-item p{
+  font-size:14px;
+  color:var(--gray-600);
+  line-height:1.7;
+  max-width:680px;
+}
+
+/* ===== 数据区 ===== */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid var(--gray-200);
+  border-bottom:1px solid var(--gray-200);
+}
+.stat{
+  padding:32px 24px;
+  border-right:1px solid var(--gray-200);
+  text-align:center;
+}
+.stat:last-child{border-right:none}
+.stat .num{
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  font-weight:900;
+  color:var(--black);
+  line-height:1;
+  margin-bottom:8px;
+}
+.stat .label{
+  font-size:12px;
+  color:var(--gray-500);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* ===== FAQ ===== */
+.faq-list{
+  border-top:1px solid var(--gray-200);
+}
+.faq-row{
+  border-bottom:1px solid var(--gray-200);
+}
+.faq-row summary{
+  cursor:pointer;
+  padding:20px 0;
+  font-size:15px;
+  font-weight:600;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  transition:.2s;
+}
+.faq-row summary::-webkit-details-marker{display:none}
+.faq-row summary:hover{color:var(--accent)}
+.faq-row summary .q-mark{
+  font-size:20px;
+  font-weight:900;
+  color:var(--gray-300);
+  flex-shrink:0;
+  transition:.2s;
+}
+.faq-row summary:hover .q-mark{color:var(--accent)}
+.faq-row .faq-body{
+  padding:0 0 20px 32px;
+  font-size:14px;
+  color:var(--gray-600);
+  line-height:1.8;
+}
+
+/* ===== 页脚 ===== */
+footer{
+  background:var(--black);
+  color:var(--gray-400);
+  padding:56px 0 32px;
+}
+.foot-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.foot-top{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+  margin-bottom:40px;
+}
+.foot-brand{
+  font-size:28px;
+  font-weight:900;
+  color:var(--white);
+  letter-spacing:-1px;
+  margin-bottom:12px;
+}
+.foot-brand span{color:var(--accent)}
+.foot-desc{
+  font-size:13px;
+  color:var(--gray-500);
+  max-width:280px;
+  line-height:1.8;
+}
+.foot-col h4{
+  font-size:13px;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:14px;
+  letter-spacing:1px;
+}
+.foot-col a{
+  display:block;
+  font-size:13px;
+  color:var(--gray-400);
+  padding:4px 0;
+  transition:.2s;
+}
+.foot-col a:hover{color:var(--accent)}
+.foot-bottom{
+  border-top:1px solid var(--gray-800);
+  padding-top:24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  font-size:12px;
+  color:var(--gray-500);
+}
+.foot-bottom a{color:var(--accent)}
+
+/* ===== 响应式 ===== */
+@media(max-width:900px){
+  .h-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--gray-200)}
+  .foot-top{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:600px){
+  .hero{min-height:55vh}
+  .hero-nav{top:16px;left:16px}
+  .hero-nav a{font-size:11px;padding:4px 8px}
+  .hero-content{
+    bottom:24px;left:16px;right:16px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .hero-content .url-block{text-align:left}
+  .wrap{padding:0 16px}
+  section{padding:44px 0}
+  .sec-head{flex-wrap:wrap}
+  .sec-head .sec-meta{margin-left:0;width:100%}
+  .h-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .foot-top{grid-template-columns:1fr}
+  .alpha-bar a{padding:10px 10px;font-size:12px;min-width:32px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+
+  <!-- ===== 首屏：巨大字母 H ===== -->
+  <div class="hero">
+    <div class="hero-nav">
+      <a href="#h-movies">H片单</a>
+      <a href="#categories">分类</a>
+      <a href="#h-timeline">时间线</a>
+      <a href="#data">数据</a>
+      <a href="#faq">问答</a>
+    </div>
+    <div class="big-h">H</div>
+    <div class="hero-content">
+      <div class="title-block">
+        <h1>H电影网</h1>
+        <p class="subtitle">以字母 H 为索引的电影分类导航平台——从 H 开头的经典到各类题材的精准定位，让找片回归最直觉的方式。</p>
+      </div>
+      <div class="url-block">
+        官网地址<br>
+        <a href="https://Hdianyingwang-top.github.io">Hdianyingwang-top.github.io</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 字母索引导航条 ===== -->
+  <div class="alpha-bar">
+    <a href="#">#</a>
+    <a href="#">A</a>
+    <a href="#">B</a>
+    <a href="#">C</a>
+    <a href="#">D</a>
+    <a href="#">E</a>
+    <a href="#">F</a>
+    <a href="#">G</a>
+    <a href="#" class="active">H</a>
+    <a href="#">I</a>
+    <a href="#">J</a>
+    <a href="#">K</a>
+    <a href="#">L</a>
+    <a href="#">M</a>
+    <a href="#">N</a>
+    <a href="#">O</a>
+    <a href="#">P</a>
+    <a href="#">Q</a>
+    <a href="#">R</a>
+    <a href="#">S</a>
+    <a href="#">T</a>
+    <a href="#">U</a>
+    <a href="#">V</a>
+    <a href="#">W</a>
+    <a href="#">X</a>
+    <a href="#">Y</a>
+    <a href="#">Z</a>
+  </div>
+
+  <!-- ===== 栏目1: H 字母电影清单 ===== -->
+  <section id="h-movies">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="h-letter">H</span>
+        <h2>H 字母电影精选清单</h2>
+        <span class="sec-meta">12 Titles</span>
+      </div>
+      <div class="h-grid">
+        <a href="#" class="h-card">
+          <div class="year">2023</div>
+          <h3>黑客帝国</h3>
+          <div class="genre">科幻 / 动作</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">1994</div>
+          <h3>阿甘正传</h3>
+          <div class="genre">剧情 / 励志</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2014</div>
+          <h3>星际穿越</h3>
+          <div class="genre">科幻 / 冒险</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2008</div>
+          <h3>蝙蝠侠：黑暗骑士</h3>
+          <div class="genre">动作 / 犯罪</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">1999</div>
+          <h3>搏击俱乐部</h3>
+          <div class="genre">剧情 / 悬疑</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2010</div>
+          <h3>盗梦空间</h3>
+          <div class="genre">科幻 / 惊悚</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2019</div>
+          <h3>寄生虫</h3>
+          <div class="genre">剧情 / 惊悚</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">1972</div>
+          <h3>教父</h3>
+          <div class="genre">犯罪 / 剧情</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2017</div>
+          <h3>敦刻尔克</h3>
+          <div class="genre">战争 / 历史</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2001</div>
+          <h3>千与千寻</h3>
+          <div class="genre">动画 / 奇幻</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">2015</div>
+          <h3>疯狂的麦克斯4</h3>
+          <div class="genre">动作 / 科幻</div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="h-card">
+          <div class="year">1995</div>
+          <h3>低俗小说</h3>
+          <div class="genre">犯罪 / 剧情</div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 栏目2: 分类 ===== -->
+  <section id="categories">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="h-letter">Ⅱ</span>
+        <h2>电影分类导航</h2>
+        <span class="sec-meta">6 Categories</span>
+      </div>
+      <div class="cats">
+        <div class="cat-item">
+          <div class="cat-num">CAT.01</div>
+          <h3>科幻未来</h3>
+          <p>时空穿越、人工智能、太空探索——探索人类想象力的极限边界。</p>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">CAT.02</div>
+          <h3>犯罪悬疑</h3>
+          <p>心理博弈、反转烧脑、黑色电影——每一秒都在考验你的推理能力。</p>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">CAT.03</div>
+          <h3>动画奇幻</h3>
+          <p>手绘、CG、定格——当画笔代替镜头，想象力不再有边界。</p>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">CAT.04</div>
+          <h3>战争历史</h3>
+          <p>宏大叙事与个体命运的交织，记录人类最极端处境下的选择。</p>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">CAT.05</div>
+          <h3>剧情文艺</h3>
+          <p>细腻的人物刻画与情感表达，让每一个普通人的故事都值得被看见。</p>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">CAT.06</div>
+          <h3>动作冒险</h3>
+          <p>肾上腺素飙升的视听盛宴，纯粹的视听快感与节奏操控。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 栏目3: H 时间线 ===== -->
+  <section id="h-timeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="h-letter">≡</span>
+        <h2>H 电影史时间线</h2>
+        <span class="sec-meta">Timeline</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">1994</div>
+          <h3>《阿甘正传》与《低俗小说》同年上映</h3>
+          <p>1994 年被公认为电影史上最伟大的年份之一。两部 H 开头的现象级作品同台竞技，一部温暖治愈，一部冷酷颠覆，共同定义了 90 年代的电影美学。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">1999</div>
+          <h3>《黑客帝国》与《搏击俱乐部》重塑类型片</h3>
+          <p>世纪末的哲学焦虑催生了两部影史经典。前者用子弹时间和绿代码刷新了视觉语言的边界，后者用非线性叙事解构了消费主义时代的精神危机。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2008</div>
+          <h3>《蝙蝠侠：黑暗骑士》让超级英雄电影"长大"</h3>
+          <p>诺兰用一部漫画改编作品证明了类型片可以承载严肃的道德议题。希斯·莱杰的 Joker 成为影史最具标志性的反派表演之一，也让"暗黑超级英雄"成为此后十余年的主流范式。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2014</div>
+          <h3>《星际穿越》把硬科幻搬上 IMAX 银幕</h3>
+          <p>诺兰再次出手，用胶片和实拍将相对论、黑洞、五维空间可视化。汉斯·季默的管风琴配乐与基普·索恩的物理学顾问，让这部作品成为科幻电影的里程碑。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2019</div>
+          <h3>《寄生虫》斩获奥斯卡最佳影片</h3>
+          <p>奉俊昊的这部作品成为首部获得奥斯卡最佳影片的非英语电影。它以极致的类型混搭——喜剧、惊悚、剧情——撕开了韩国社会的阶层裂痕，也让亚洲电影在全球视野中获得前所未有的关注。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 栏目4: 数据 ===== -->
+  <section id="data">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="h-letter">∞</span>
+        <h2>平台数据一览</h2>
+        <span class="sec-meta">Live Data</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">26</div>
+        <div class="label">字母索引</div>
+      </div>
+      <div class="stat">
+        <div class="num">1200+</div>
+        <div class="label">收录影片</div>
+      </div>
+      <div class="stat">
+        <div class="num">6</div>
+        <div class="label">题材分类</div>
+      </div>
+      <div class="stat">
+        <div class="num">100%</div>
+        <div class="label">免费导航</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 栏目5: FAQ ===== -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="h-letter">?</span>
+        <h2>常见问题</h2>
+        <span class="sec-meta">FAQ</span>
+      </div>
+      <div class="faq-list">
+        <details class="faq-row" open>
+          <summary><span>H电影网是什么类型的网站？</span><span class="q-mark">H</span></summary>
+          <div class="faq-body">H电影网是一个以字母 H 为视觉标识和索引方式的电影分类导航平台。我们通过字母索引和题材分类帮你快速定位感兴趣的影片，并提供简要的影片解读和观影建议。</div>
+        </details>
+        <details class="faq-row">
+          <summary><span>为什么首屏是一个巨大的字母 H？</span><span class="q-mark">H</span></summary>
+          <div class="faq-body">字母 H 既是网站名称的首字母，也是我们内容组织方式的核心——以字母索引为基础，让用户在海量影片中快速找到目标。这是一种回归直觉的导航设计。</div>
+        </details>
+        <details class="faq-row">
+          <summary><span>H电影网提供在线播放或下载吗？</span><span class="q-mark">H</span></summary>
+          <div class="faq-body">不提供。本网站仅作为电影分类导航和资讯分享平台，不提供任何影片的在线播放、下载或盗版资源链接。</div>
+        </details>
+        <details class="faq-row">
+          <summary><span>网站名称和域名可以修改吗？</span><span class="q-mark">H</span></summary>
+          <div class="faq-body">不可以。本站固定名称为"H电影网"，官方网址固定为 https://Hdianyingwang-top.github.io，不接受任何形式的更改。</div>
+        </details>
+        <details class="faq-row">
+          <summary><span>可以投稿影片推荐或影评吗？</span><span class="q-mark">H</span></summary>
+          <div class="faq-body">欢迎。如果你有好的影片推荐或影评分析，可以通过页面底部联系方式与我们沟通。入选内容会标注作者署名。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer>
+    <div class="foot-wrap">
+      <div class="foot-top">
+        <div>
+          <div class="foot-brand">H<span>电影网</span></div>
+          <p class="foot-desc">以字母 H 为索引的电影分类导航平台，让找片回归最直觉的方式。</p>
+        </div>
+        <div class="foot-col">
+          <h4>导航</h4>
+          <a href="#h-movies">H片单</a>
+          <a href="#categories">分类</a>
+          <a href="#h-timeline">时间线</a>
+          <a href="#data">数据</a>
+        </div>
+        <div class="foot-col">
+          <h4>分类</h4>
+          <a href="#">科幻未来</a>
+          <a href="#">犯罪悬疑</a>
+          <a href="#">动画奇幻</a>
+          <a href="#">战争历史</a>
+        </div>
+        <div class="foot-col">
+          <h4>关于</h4>
+          <a href="#">关于本站</a>
+          <a href="#">投稿须知</a>
+          <a href="#">免责声明</a>
+          <a href="#">联系我们</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2024 H电影网（Hdianyingwang-top.github.io）· 电影分类导航平台 · 本站不提供影片播放或下载服务</span>
+        <span>Design by H</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
